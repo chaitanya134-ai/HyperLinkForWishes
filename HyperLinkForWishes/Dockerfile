@@ -1,13 +1,11 @@
-﻿# Use the official .NET SDK image for building the app
+﻿# Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /app
+WORKDIR /src
+COPY . .
+RUN dotnet publish "HyperLinkForWishes.csproj" -c Release -o /app/publish
 
-# Copy everything and publish the app
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# Build runtime image
+# Runtime Stage
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/out ./
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "HyperLinkForWishes.dll"]
