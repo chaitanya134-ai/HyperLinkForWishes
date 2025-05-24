@@ -14,7 +14,7 @@ namespace HyperLinkForWishes.Pages
         {
             var uri = new Uri(Navigation.Uri);
             var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-            Name = query["name"] ?? "";
+            Name = query["name"] ?? "Deepika....!";
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

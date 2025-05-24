@@ -1,5 +1,5 @@
 ﻿// fireworks.js
-window.startFireworks = function (name = "") {
+window.startFireworks = function (name = "Deepika") {
     const canvas = document.getElementById("fireworks");
     if (!canvas) return;
 
@@ -122,25 +122,25 @@ window.startFireworks = function (name = "") {
         gradient.addColorStop(1, '#FF6347');
 
         ctx.fillStyle = gradient;
-        ctx.fillText('Happy Anniversary', 0, -20);
+        ctx.fillText('Happiest Birthday', 0, -20);
 
         // Name text
         ctx.font = 'bold 36px Arial, sans-serif';
         const nameGradient = ctx.createLinearGradient(0, -15, 0, 15);
         nameGradient.addColorStop(0, '#FF69B4');
         nameGradient.addColorStop(0.5, '#FF1493');
-        nameGradient.addColorStop(1, '#DC143C');
+        nameGradient.addColorStop(1, '#00FF00');
 
         ctx.fillStyle = nameGradient;
-        ctx.fillText(name + '!', 0, 30);
+        ctx.fillText(name , 0, 30);
 
         // Text outline
         ctx.strokeStyle = '#FFFFFF';
         ctx.lineWidth = 2;
         ctx.font = 'bold 48px Arial, sans-serif';
-        ctx.strokeText('Happy Anniversary', 0, -20);
+        ctx.strokeText('Happiest Birthday', 0, -20);
         ctx.font = 'bold 36px Arial, sans-serif';
-        ctx.strokeText(name + '!', 0, 30);
+        ctx.strokeText(name, 0, 30);
 
         ctx.restore();
     }
