@@ -1,0 +1,144 @@
+﻿@page "/"
+@page "/birthday"
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+        overflow: hidden;
+    }
+
+    .birthday-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #fireworks {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+    }
+
+    .control-panel {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+</style>
+
+<div class="birthday-container">
+    <canvas id="fireworks"></canvas>
+
+    <div class="control-panel">
+        <button class="btn" onclick="triggerBigExplosion()">🎆 Big Blast!</button>
+        <button class="btn" onclick="toggleFireworks()" id="toggleBtn">⏸️ Pause Fireworks</button>
+        <button class="btn" onclick="changeColors()">🌈 Change Colors</button>
+    </div>
+</div>
+
+<script src="~/js/fireworks.js"></script>
+<script>
+    let fireworksCleanup;
+    let fireworksActive = true;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the name from the current page's component
+        const name = '@Name';
+
+        // Set canvas size
+        const canvas = document.getElementById('fireworks');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Start fireworks with the name
+        fireworksCleanup = window.startFireworks(name);
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    });
+
+    function triggerBigExplosion() {
+        const canvas = document.getElementById("fireworks");
+        if (!canvas || !window.createMegaExplosion) return;
+
+        // Create multiple simultaneous explosions
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const x = Math.random() * (canvas.width - 200) + 100;
+                const y = Math.random() * (canvas.height * 0.7) + 50;
+                window.createMegaExplosion(x, y);
+            }, i * 150);
+        }
+    }
+
+    function toggleFireworks() {
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        if (fireworksActive) {
+            if (fireworksCleanup) {
+                fireworksCleanup();
+                fireworksCleanup = null;
+            }
+            fireworksActive = false;
+            toggleBtn.textContent = '▶️ Start Fireworks';
+            toggleBtn.style.background = 'rgba(0, 255, 0, 0.3)';
+        } else {
+            const name = '@Name';
+            fireworksCleanup = window.startFireworks(name);
+            fireworksActive = true;
+            toggleBtn.textContent = '⏸️ Pause Fireworks';
+            toggleBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+        }
+    }
+
+    function changeColors() {
+        // This would trigger a color change in the fireworks
+        if (window.changeFireworksColors) {
+            window.changeFireworksColors();
+        }
+    }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        if (fireworksCleanup) {
+            fireworksCleanup();
+        }
+    });
+</script>
